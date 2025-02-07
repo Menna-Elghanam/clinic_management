@@ -1,84 +1,58 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\Clinic;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Clinic $clinic)
     {
-        //
+        // Get appointments for the specified clinic
+        $appointments = Appointment::whereHas('patient', function ($query) use ($clinic) {
+            $query->where('clinic_id', $clinic->id);
+        })->get();
+
+        // Pass the clinic and appointments to the view
+        return view('appointments.index', compact('appointments', 'clinic'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    // App\Http\Controllers\AppointmentController.php
+public function create($clinic_id)
+{
+    $clinic = Clinic::findOrFail($clinic_id);
+    $doctors = $clinic->doctors;  // This should fetch doctors associated with the clinic
+    return view('appointments.create', compact('clinic', 'doctors'));
+}
+
+
+    public function store(Request $request, Clinic $clinic)
     {
-        //
+        // Validate the input data
+        $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'appointment_date' => 'required|date',
+        ]);
+
+        // Create a new appointment for the specified clinic
+        Appointment::create([
+            'patient_id' => $request->patient_id,
+            'doctor_id' => $request->doctor_id,
+            'appointment_date' => $request->appointment_date,
+            'clinic_id' => $clinic->id,  // Make sure this is linked to the clinic
+        ]);
+
+        // Redirect to the appointments index for the clinic
+        return redirect()->route('appointments.index', $clinic->id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show(Clinic $clinic, Appointment $appointment)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // Pass the appointment to the view
+        return view('appointments.show', compact('appointment'));
     }
 }
