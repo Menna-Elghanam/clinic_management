@@ -5,13 +5,12 @@
     <div class="max-w-2xl mx-auto">
         <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Create Appointment</h1>
-            <p class="text-sm text-gray-600 mt-1">{{ $clinic->name }}</p>
+            <h1 class="text-2xl font-bold text-gray-800">Add Medical Record</h1>
         </div>
 
         <!-- Form Card -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <form action="{{ route('appointments.store', $clinic->id) }}" method="POST" class="p-6 space-y-6">
+            <form action="{{ route('medical_records.store', ['clinic' => $clinic->id]) }}" method="POST" class="p-6 space-y-6">
                 @csrf
 
                 <!-- Patient Select -->
@@ -24,7 +23,7 @@
                             required
                             class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm">
                         <option value="">Select Patient</option>
-                        @foreach ($clinic->patients as $patient)
+                        @foreach ($patients as $patient)
                             <option value="{{ $patient->id }}">{{ $patient->name }}</option>
                         @endforeach
                     </select>
@@ -52,52 +51,50 @@
                     @enderror
                 </div>
 
-                <!-- Appointment Date -->
+                <!-- Description Textarea -->
                 <div class="space-y-1">
-                    <label for="appointment_date" class="block text-sm font-medium text-gray-700">
-                        Appointment Date & Time
+                    <label for="description" class="block text-sm font-medium text-gray-700">
+                        Description
+                    </label>
+                    <textarea name="description" 
+                              id="description" 
+                              required
+                              rows="4"
+                              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                              placeholder="Enter medical record description"></textarea>
+                    @error('description')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Date Input -->
+                <div class="space-y-1">
+                    <label for="date" class="block text-sm font-medium text-gray-700">
+                        Date & Time
                     </label>
                     <input type="datetime-local" 
-                           name="appointment_date" 
-                           id="appointment_date" 
+                           name="date" 
+                           id="date" 
                            required
                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    @error('appointment_date')
+                    @error('date')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Form Actions -->
                 <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
-                    <a href="{{ route('appointments.index', $clinic->id) }}" 
-                       class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Back
+                    <a href="{{ route('medical_records.index', ['clinic' => $clinic->id]) }}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Cancel
                     </a>
-                    
                     <button type="submit"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        Create Appointment
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Save Record
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    // Set minimum date to today
-    document.addEventListener('DOMContentLoaded', function() {
-        const today = new Date();
-        const formattedDate = today.toISOString().slice(0, 16);
-        document.getElementById('appointment_date').min = formattedDate;
-    });
-</script>
-@endpush
 @endsection

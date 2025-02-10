@@ -3,10 +3,10 @@
 @section('content')
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 bg-red-500 text-white px-4 py-2 rounded">
+            <h1 class="text-2xl font-bold text-gray-800  text-black px-4 py-2 rounded">
                 Clinics
             </h1>
-            <a href="{{ route('clinics.create') }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition duration-300 ease-in-out">
+            <a href="{{ route('clinics.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-300 ease-in-out">
                 Add New Clinic
             </a>
         </div>
@@ -60,3 +60,14 @@
         @endif
     </div>
 @endsection
+
+
+<!-- resources/views/clinics/index.blade.php -->
+{{-- <h1>Clinics</h1>
+<ul>
+    @foreach ($clinics as $clinic)
+        <li>
+            <a href="{{ route('clinics.show', $clinic->id) }}">{{ $clinic->name }}</a>
+        </li>
+    @endforeach
+</ul> --}}

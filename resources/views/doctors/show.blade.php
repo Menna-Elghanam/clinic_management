@@ -17,7 +17,7 @@
         @endforeach
     </ul>
 
-    <a href="{{ route('doctors.index') }}" class="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+    <a href="{{ route('doctors.index',['clinic' => $clinic->id]) }}" class="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
         Back to Doctors List
     </a>
 </div>

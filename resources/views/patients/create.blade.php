@@ -1,27 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Patient</title>
-</head>
-<body>
-    <h1>Add a New Patient to Clinic: {{ $clinic->name }}</h1>
+@extends('layouts.app')
 
-    <form action="{{ route('patients.store', $clinic->id) }}" method="POST">
-        @csrf
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" required><br>
+@section('content')
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">Add a New Patient to Clinic: {{ $clinic->name }}</h1>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required><br>
+        <form action="{{ route('patients.store', $clinic->id) }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-600 mb-1">Name:</label>
+                <input type="text" name="name" id="name" required class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
 
-        <label for="phone">Phone:</label>
-        <input type="text" name="phone" id="phone" required><br>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-600 mb-1">Email:</label>
+                <input type="email" name="email" id="email" required class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
 
-        <button type="submit">Save Patient</button>
-    </form>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-600 mb-1">Phone:</label>
+                <input type="text" name="phone" id="phone" required class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
 
-    <a href="{{ route('patients.index', $clinic->id) }}">Back to Patient List</a>
-</body>
-</html>
+            <div class="flex justify-end space-x-3">
+                <a href="{{ route('patients.index', $clinic->id) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Back to Patient List</a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save Patient</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

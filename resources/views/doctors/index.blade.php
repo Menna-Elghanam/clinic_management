@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-bold">Doctors List</h1>
-    <a href="{{ route('doctors.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mt-2 inline-block">Add Doctor</a>
+    <a href="{{ route('doctors.create', $clinic->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded mt-2 inline-block">Add Doctor</a>
     
     @if(session('success'))
         <p class="bg-green-300 text-green-800 p-2 rounded mt-2">{{ session('success') }}</p>
@@ -25,14 +25,15 @@
                 <td class="border p-2">{{ $doctor->specialization }}</td>
                 <td class="border p-2">{{ $doctor->clinic->name ?? 'No Clinic' }}</td>
                 <td class="border p-2">
-                    <a href="{{ route('doctors.show', $doctor) }}" class="text-blue-600">View</a> | 
-                    <a href="{{ route('doctors.edit', $doctor) }}" class="text-yellow-600">Edit</a> | 
-                    <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" class="inline">
+                    <a href="{{ route('doctors.show', ['clinic' => $clinic->id, 'doctor' => $doctor->id]) }}" class="text-blue-600">View</a> | 
+                    <a href="{{ route('doctors.edit', ['clinic' => $clinic->id, 'doctor' => $doctor->id]) }}" class="text-yellow-600">Edit</a> | 
+                    <form action="{{ route('doctors.destroy', ['clinic' => $clinic->id, 'doctor' => $doctor->id]) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600">Delete</button>
                     </form>
                 </td>
+                
             </tr>
             @endforeach
         </tbody>

@@ -5,26 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clinic Management</title>
     @vite('resources/css/app.css')
+
+    <!-- SweetAlert Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     <nav class="bg-white shadow-md">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-xl font-bold text-blue-600">
-                Clinic Management
-            </div>
-            <div class="space-x-4">
-                <a 
-                    href="{{ route('clinics.index') }}" 
-                    class="text-gray-700 hover:text-blue-600 transition duration-300 ease-in-out"
-                >
-                    Home
-                </a>
-                <a 
-                    href="{{ route('clinics.create') }}" 
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ease-in-out"
-                >
-                    Add Clinic
-                </a>
+                <a href="{{ route('clinics.index') }}">Clinic Management</a>
             </div>
         </div>
     </nav>
@@ -38,5 +27,19 @@
             <p>&copy; {{ date('Y') }} Clinic Management System</p>
         </div>
     </footer>
+
+    <!-- Show SweetAlert on Success -->
+    @if(session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('success') }}",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            });
+        </script>
+    @endif
 </body>
 </html>

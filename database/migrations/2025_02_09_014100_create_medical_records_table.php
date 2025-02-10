@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('medical_records', function (Blueprint $table) {
             $table->id();
-            $table->text('diagnosis');
-            $table->text('prescription')->nullable();
-            $table->text('notes')->nullable();
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('doctor_id')->constrained()->onDelete('cascade');
+            $table->text('description');
+            $table->dateTime('date');
+        
             $table->timestamps();
         });
     }

@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'address',
+        'specialization',
+        'is_active',
     ];
 
     /**
@@ -40,7 +45,24 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
+
+    // Role checking methods
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isDoctor()
+    {
+        return $this->role === 'doctor';
+    }
+
+    public function isStaff()
+    {
+        return $this->role === 'staff';
+    }
 
     public function appointments() {
         return $this->hasMany(Appointment::class);
